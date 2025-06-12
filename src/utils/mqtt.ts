@@ -18,19 +18,26 @@ const MQTT_CONFIG = {
 
 export const mqttConfig = MQTT_CONFIG;
 
-export const mqttClient = mqtt.connect(mqttConfig.broker, {
-  port: mqttConfig.port,
-  username: mqttConfig.user,
-  password: mqttConfig.pass,
-});
+export let mqttClient;
 
-mqttClient.on("connect", () => {
-  console.log("MQTT client connected successfully.");
-});
+if (
+  mqttConfig.broker && mqttConfig.port && mqttConfig.user && mqttConfig.pass &&
+  mqttConfig.tempTopic && mqttConfig.controlTopic
+) {
+  mqttClient = mqtt.connect(mqttConfig.broker, {
+    port: mqttConfig.port,
+    username: mqttConfig.user,
+    password: mqttConfig.pass,
+  });
 
-mqttClient.on("error", (err: Error) => {
-  console.error("MQTT client error:", err);
-});
+  mqttClient.on("connect", () => {
+    console.log("MQTT client connected successfully.");
+  });
+
+  mqttClient.on("error", (err: Error) => {
+    console.error("MQTT client error:", err);
+  });
+}
 
 /**
  * Starts the MQTT listener.
@@ -38,6 +45,17 @@ mqttClient.on("error", (err: Error) => {
  */
 export async function startMqttListener() {
   console.log("Starting MQTT listener...");
+
+  if (
+    !mqttConfig.broker || !mqttConfig.port || !mqttConfig.user ||
+    !mqttConfig.pass || !mqttConfig.tempTopic || !mqttConfig.controlTopic
+  ) {
+    console.error(
+      "MQTT configuration is missing. Please check your .env file.",
+    );
+
+    return;
+  }
 
   const client = mqtt.connect(mqttConfig.broker, {
     port: mqttConfig.port,
@@ -84,6 +102,6 @@ export async function startMqttListener() {
   });
 }
 
-startMqttListener().catch((err) => {
+mqttClient && startMqttListener().catch((err) => {
   console.error("Error starting MQTT listener:", err);
 });
