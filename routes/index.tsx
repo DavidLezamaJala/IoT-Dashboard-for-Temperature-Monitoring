@@ -20,8 +20,9 @@ export const handler: Handlers<TemperatureReading[]> = {
     for await (const entry of entries) {
       readings.push(entry.value);
     }
+
     readings.sort((a, b) =>
-      new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
 
     return ctx.render(readings);

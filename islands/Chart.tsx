@@ -24,6 +24,7 @@ export function TemperatureChart({ readings }: ChartProps) {
     }
 
     const ctx = canvasRef.current.getContext("2d");
+
     if (ctx) {
       chartRef.current = new Chart(ctx, {
         type: "line",
