@@ -15,7 +15,7 @@ export const ListTemperatures = ({ temperatures }: {
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         {temperatures.slice(0, 10).map((reading, index) => {
-          const { date, time } = formatDateTime(reading.timestamp);
+          const { date } = formatDateTime(reading.timestamp);
           const tempColorClass = getTemperatureColor(
             reading.temperature,
           );
@@ -67,7 +67,7 @@ export const ListTemperatures = ({ temperatures }: {
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  {time}
+                  {new Date(reading.timestamp).toLocaleTimeString()}
                 </div>
               </div>
             </div>

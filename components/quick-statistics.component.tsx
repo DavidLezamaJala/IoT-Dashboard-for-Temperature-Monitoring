@@ -1,5 +1,4 @@
 import { type TemperatureReading } from "../src/models/temperature.model.ts";
-import { formatDateTime } from "../src/utils/temperature.ts";
 
 export const QuickStatistics = ({ temperatures }: {
   temperatures: TemperatureReading[];
@@ -30,7 +29,7 @@ export const QuickStatistics = ({ temperatures }: {
           <span class="text-gray-600">Last Updated</span>
           <span class="font-medium text-gray-900">
             {temperatures.length > 0
-              ? formatDateTime(temperatures[0].timestamp).time
+              ? new Date(temperatures[0].timestamp).toLocaleTimeString()
               : "N/A"}
           </span>
         </div>
